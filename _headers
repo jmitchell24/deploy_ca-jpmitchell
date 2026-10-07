@@ -1,0 +1,4 @@
+# CORS headers for every path (moved from netlify.toml, which isn't part of the deploy repo).
+/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept
