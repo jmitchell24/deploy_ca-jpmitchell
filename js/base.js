@@ -258,3 +258,91 @@ document.addEventListener('DOMContentLoaded', () => {
         document.documentElement.classList.add("hover-transitions");
     }));
 });
+
+//
+// Scrollbars
+//
+// main and nav hide their native scrollbars (which look different in every browser); this draws
+// one minimal overlay thumb instead, styled in _styles-scrollbar.scss. Scrolling itself is still
+// native (wheel, touch, keyboard); the thumb is an indicator that can also be dragged.
+//
+
+function addScrollbar(el) {
+    const INSET = 4;        // gap above and below the thumb, in px
+    const MIN_HEIGHT = 24;  // keep the thumb grabbable on long pages
+
+    const thumb = document.createElement("div");
+    thumb.className = "scrollbar-thumb";
+    thumb.setAttribute("aria-hidden", "true");
+    el.classList.add("has-scrollbar");
+    el.appendChild(thumb);
+
+    let hideTimer;
+
+    function update() {
+        const { scrollTop, scrollHeight, clientHeight } = el;
+        const maxScroll = scrollHeight - clientHeight;
+
+        if (maxScroll <= 1) {
+            thumb.style.display = "none";
+            return;
+        }
+        thumb.style.display = "";
+
+        const track = clientHeight - INSET * 2;
+        const height = Math.max(MIN_HEIGHT, track * clientHeight / scrollHeight);
+        const offset = INSET + (track - height) * (scrollTop / maxScroll);
+
+        // the thumb lives inside the scroll area, so it's moved down by scrollTop to stay in view
+        thumb.style.height = `${height}px`;
+        thumb.style.transform = `translateY(${scrollTop + offset}px)`;
+    }
+
+    function showWhileScrolling() {
+        el.classList.add("scrollbar-active");
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => el.classList.remove("scrollbar-active"), 1000);
+    }
+
+    el.addEventListener("scroll", () => {
+        update();
+        showWhileScrolling();
+    }, { passive: true });
+
+    // re-measure when the area or its content changes size (window resize, images loading)
+    const resizeObserver = new ResizeObserver(update);
+    resizeObserver.observe(el);
+    for (const child of el.children) {
+        if (child !== thumb) resizeObserver.observe(child);
+    }
+
+    // dragging: thumb movement maps to scroll distance by the ratio of the two ranges
+    thumb.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        thumb.setPointerCapture(e.pointerId);
+        thumb.classList.add("dragging");
+
+        const startY = e.clientY;
+        const startScroll = el.scrollTop;
+        const track = el.clientHeight - INSET * 2;
+        const ratio = (el.scrollHeight - el.clientHeight) / (track - thumb.offsetHeight);
+
+        const onMove = (ev) => {
+            el.scrollTop = startScroll + (ev.clientY - startY) * ratio;
+        };
+        const onUp = () => {
+            thumb.classList.remove("dragging");
+            thumb.removeEventListener("pointermove", onMove);
+        };
+
+        thumb.addEventListener("pointermove", onMove);
+        thumb.addEventListener("pointerup", onUp, { once: true });
+        thumb.addEventListener("pointercancel", onUp, { once: true });
+    });
+
+    update();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("main, nav").forEach(addScrollbar);
+});

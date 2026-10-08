@@ -4,7 +4,7 @@
         <loc>https://www.jpmitchell.ca/</loc>
     </url>
     <url>
-        <loc>https://www.jpmitchell.ca/about/</loc>
+        <loc>https://www.jpmitchell.ca/peanuts/</loc>
         <lastmod>2026-10-07</lastmod>
     </url>
     <url>
@@ -33,12 +33,20 @@
         <loc>https://www.jpmitchell.ca/projects/</loc>
     </url>
     <url>
+        <loc>https://www.jpmitchell.ca/projects/algoma/</loc>
+        <lastmod>2026-10-08</lastmod>
+    </url>
+    <url>
         <loc>https://www.jpmitchell.ca/projects/gbtwo/</loc>
         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
         <loc>https://www.jpmitchell.ca/projects/homescreen-notes/</loc>
         <lastmod>2025-12-18</lastmod>
+    </url>
+    <url>
+        <loc>https://www.jpmitchell.ca/projects/lzon/</loc>
+        <lastmod>2026-10-08</lastmod>
     </url>
     <url>
         <loc>https://www.jpmitchell.ca/projects/page/1/</loc>
