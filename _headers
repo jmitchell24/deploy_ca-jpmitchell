@@ -2,3 +2,8 @@
 /*
   Access-Control-Allow-Origin: *
   Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept
+
+# Fonts never change under the same filename: cache them for a year, so pages don't
+# revalidate them (and briefly show fallback fonts) on every load
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
