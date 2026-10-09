@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //
 // Scrollbars
 //
-// main and nav hide their native scrollbars (which look different in every browser); this draws
+// main and the sidebar hide their native scrollbars (which look different in every browser); this draws
 // one minimal overlay thumb instead, styled in _styles-scrollbar.scss. Scrolling itself is still
 // native (wheel, touch, keyboard); the thumb is an indicator that can also be dragged.
 //
@@ -344,5 +344,5 @@ function addScrollbar(el) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll("main, nav").forEach(addScrollbar);
+    document.querySelectorAll("main, .sidebar").forEach(addScrollbar);
 });
